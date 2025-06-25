@@ -1,0 +1,78 @@
+/* Basic Reset & Typography */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #FFFFFF;
+    color: #000000;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Header Styling */
+.site-header {
+    padding: 2rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #FFFFFF;
+}
+
+.header-content {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+}
+
+.site-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.cv-link {
+    font-size: 1.2rem;
+    color: #000000;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.cv-link:hover {
+    text-decoration: underline;
+}
+
+/* Main Body & Gallery Placeholder */
+main {
+    /* Add padding to the top to avoid content hiding behind the fixed header */
+    padding-top: 8rem; 
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 4rem;
+}
+
+.gallery-section {
+    margin-bottom: 4rem;
+}
+
+.gallery-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #000000;
+    padding-bottom: 0.5rem;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.gallery-item video,
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
