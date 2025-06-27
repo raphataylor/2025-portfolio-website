@@ -10,22 +10,18 @@ const portfolioSections = [
     {
         title: "Modern Tuition",
         items: [
-            { type: 'image', source: 'assets/images/modern-tuition-1.jpg', text: 'Optional text for item 1.' },
             { type: 'video', source: 'assets/videos/wedding.mp4' },
-            { type: 'image', source: 'assets/images/modern-tuition-3.jpg' },
+            { type: 'image', source: 'assets/images/Layer 10400ppi.png'}
         ]
     },
     {
         title: "Nfts",
         items: [
-            { type: 'video', source: 'assets/videos/nft-1.mp4' },
-            { type: 'video', source: 'assets/videos/nft-2.mp4' },
         ]
     },
     {
         title: "Webgraph",
         items: [
-            { type: 'image', source: 'assets/images/webgraph-1.jpg' }
         ]
     },
     {
@@ -45,27 +41,57 @@ const portfolioSections = [
 ];
 
 //
-// === DYNAMIC GALLERY BUILDER ===
+// === LIGHTBOX AND GALLERY LOGIC ===
 //
-// This code reads your database and builds the HTML.
-// You shouldn't need to edit this part.
-//
+
+// Get references to the lightbox elements from the DOM
+const lightbox = document.getElementById('lightbox');
+const lightboxContent = document.getElementById('lightbox-content');
+const lightboxClose = document.getElementById('lightbox-close');
+
+// --- Function to open the lightbox ---
+function openLightbox(item) {
+    // Clear any previous content
+    lightboxContent.innerHTML = ''; 
+
+    if (item.type === 'image') {
+        const img = document.createElement('img');
+        img.src = item.source;
+        lightboxContent.appendChild(img);
+    } else if (item.type === 'video') {
+        const vid = document.createElement('video');
+        vid.src = item.source;
+        vid.controls = true; // Show video controls in the lightbox
+        vid.autoplay = true; // Autoplay when opened
+        vid.muted = false; // Allow sound in the lightbox
+        lightboxContent.appendChild(vid);
+    }
+    
+    // Show the lightbox
+    lightbox.classList.add('active');
+}
+
+// --- Function to close the lightbox ---
+function closeLightbox() {
+    lightbox.classList.remove('active');
+    // Important: Stop any video that might be playing
+    lightboxContent.innerHTML = ''; 
+}
+
+// --- Dynamic Gallery Builder ---
 function buildGalleries() {
     const portfolioBody = document.getElementById('portfolio-body');
     if (!portfolioBody) return;
 
     portfolioSections.forEach(section => {
-        // Create the main section container
         const sectionEl = document.createElement('section');
         sectionEl.className = 'gallery-section';
 
-        // Create the title
         const titleEl = document.createElement('h2');
         titleEl.className = 'gallery-title';
         titleEl.textContent = section.title;
         sectionEl.appendChild(titleEl);
         
-        // Create the grid for items
         const gridEl = document.createElement('div');
         gridEl.className = 'gallery-grid';
 
@@ -73,10 +99,16 @@ function buildGalleries() {
             const itemContainer = document.createElement('div');
             itemContainer.className = 'gallery-item';
 
+            // *** EVENT LISTENER TO OPEN LIGHTBOX ***
+            // When an item is clicked, call openLightbox with its data
+            itemContainer.addEventListener('click', () => {
+                openLightbox(item);
+            });
+
             if (item.type === 'image') {
                 const img = document.createElement('img');
                 img.src = item.source;
-                img.alt = item.text || section.title; // Use text for alt, or fallback to section title
+                img.alt = item.text || section.title;
                 itemContainer.appendChild(img);
             } else if (item.type === 'video') {
                 const vid = document.createElement('video');
@@ -95,5 +127,25 @@ function buildGalleries() {
     });
 }
 
-// Run the function when the page loads
-document.addEventListener('DOMContentLoaded', buildGalleries);
+// --- Event Listeners to run everything ---
+document.addEventListener('DOMContentLoaded', () => {
+    buildGalleries();
+
+    // Close lightbox by clicking the 'x' button
+    lightboxClose.addEventListener('click', closeLightbox);
+    
+    // Close lightbox by clicking the background overlay
+    lightbox.addEventListener('click', (e) => {
+        // Only close if the click is on the background itself, not the content
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+
+    // Close lightbox by pressing the 'Escape' key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeLightbox();
+        }
+    });
+});
