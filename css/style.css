@@ -109,23 +109,21 @@ main {
 }
 
 .lightbox-content {
-    max-width: 90vw; /* 90% of viewport width */
-    max-height: 90vh; /* 90% of viewport height */
+    /* These two lines are key */
+    max-width: 90vw;  /* Max width is 90% of the viewport (window) width */
+    max-height: 90vh; /* Max height is 90% of the viewport (window) height */
+
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: default; /* Make the cursor normal over the content itself */
 }
 
 .lightbox-content img,
 .lightbox-content video {
-    /* Ensure the media fits within the content area without distortion */
     max-width: 100%;
     max-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    /* This ensures the image/video scales down to fit, maintaining its aspect ratio */
+    object-fit: contain; 
 }
 
 .lightbox-close {
@@ -137,6 +135,38 @@ main {
     font-weight: 200;
     cursor: pointer;
     line-height: 1;
+}
+
+/* --- New Lightbox Navigation Styles --- */
+
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    color: #000;
+    font-weight: 300;
+    cursor: pointer;
+    padding: 0 1.5rem;
+    user-select: none; /* Prevents text selection on double click */
+    transition: color 0.2s ease-in-out;
+}
+
+.lightbox-nav:hover {
+    color: #555;
+}
+
+#lightbox-prev {
+    left: 0;
+}
+
+#lightbox-next {
+    right: 0;
+}
+
+/* Utility class to hide elements */
+.hidden {
+    display: none;
 }
 
 .gallery-item {
